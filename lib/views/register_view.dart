@@ -286,13 +286,13 @@ class _RegisterViewState extends State<RegisterView> with SingleTickerProviderSt
                                       }
 
                                       // 🔥 REGISTER FIRST
-                                      await vm.register(
+                                      final success = await vm.register(
                                         nameController.text.trim(),
                                         emailController.text.trim(),
                                         passController.text.trim(),
                                       );
 
-                                      if (vm.errorMessage == null && context.mounted) {
+                                      if (success && context.mounted) {
                                         // Modern themed dialog
                                         final enable = await showDialog<bool>(
                                           context: context,

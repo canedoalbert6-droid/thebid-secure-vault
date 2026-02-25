@@ -48,6 +48,7 @@ class AuthViewModel extends ChangeNotifier {
   // 🔑 LOGIN
   Future<void> login(String email, String password) async {
     try {
+      errorMessage = null;
       isLoading = true;
       notifyListeners();
 
@@ -70,26 +71,36 @@ class AuthViewModel extends ChangeNotifier {
       user = updatedUser;
 
     } catch (e) {
-      // Exception suppressed
+      errorMessage = "Invalid email or password.";
     } finally {
       isLoading = false;
       notifyListeners();
     }
   }
 
-  Future<void> register(String name, String email, String password) async {
+  Future<void> refreshUser() async {
+    await FirebaseAuth.instance.currentUser?.reload();
+    user = FirebaseAuth.instance.currentUser;
+    notifyListeners();
+  }
+
+  Future<bool> register(String name, String email, String password) async {
     try {
       isLoading = true;
       notifyListeners();
 
       final result = await _authService.register(email, password);
       await result.user!.updateDisplayName(name);
+      
+      // Force refresh to ensure name is caught in the state
+      await refreshUser();
 
       await result.user!.sendEmailVerification();
       await _storageService.saveUserId(result.user!.uid);
-
+      return true;
     } catch (e) {
       // Exception suppressed
+      return false;
     } finally {
       isLoading = false;
       notifyListeners();
@@ -144,6 +155,14 @@ class AuthViewModel extends ChangeNotifier {
     } finally {
       isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> resendVerificationEmail() async {
+    try {
+      await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+    } catch (e) {
+      // Exception suppressed
     }
   }
 

@@ -104,6 +104,30 @@ class _LoginViewState extends State<LoginView>
                         ),
                         const SizedBox(height: 20),
 
+                        if (vm.errorMessage != null)
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            margin: const EdgeInsets.only(bottom: 20),
+                            decoration: BoxDecoration(
+                              color: Colors.redAccent.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.redAccent.withOpacity(0.3)),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.error_outline_rounded, color: Colors.redAccent, size: 20),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    vm.errorMessage!,
+                                    style: const TextStyle(
+                                        color: Colors.redAccent, fontSize: 13, fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
                           width: vm.isLoading ? 55 : double.infinity,

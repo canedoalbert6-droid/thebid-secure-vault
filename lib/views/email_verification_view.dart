@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import '../viewmodels/auth_viewmodel.dart';
 
 class EmailVerificationView extends StatefulWidget {
   const EmailVerificationView({super.key});
@@ -20,11 +22,16 @@ class _EmailVerificationViewState
 
   Future<void> checkEmailVerified() async {
     await Future.delayed(const Duration(seconds: 5));
+    if (!mounted) return;
+    
     await FirebaseAuth.instance.currentUser?.reload();
 
-    if (FirebaseAuth.instance.currentUser!.emailVerified) {
+    if (FirebaseAuth.instance.currentUser?.emailVerified ?? false) {
       if (mounted) {
-        Navigator.pushReplacementNamed(context, '/profile');
+        await context.read<AuthViewModel>().refreshUser();
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/profile');
+        }
       }
     } else {
       checkEmailVerified();
@@ -33,20 +40,74 @@ class _EmailVerificationViewState
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    final authVM = context.read<AuthViewModel>();
+
+    return Scaffold(
+      backgroundColor: const Color(0xFF0F0F1A),
+      body: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.mark_email_read,
-                size: 80, color: Colors.blue),
-            SizedBox(height: 20),
-            Text(
-              "Verification Email Sent\nPlease check your inbox.",
-              textAlign: TextAlign.center,
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.blueAccent.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.mark_email_read_rounded,
+                  size: 80, color: Colors.blueAccent),
             ),
-            SizedBox(height: 20),
-            CircularProgressIndicator()
+            const SizedBox(height: 30),
+            const Text(
+              "Verify Your Email",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              "We've sent a verification link to:\n${FirebaseAuth.instance.currentUser?.email}",
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white70, fontSize: 16),
+            ),
+            const SizedBox(height: 30),
+            const CircularProgressIndicator(color: Colors.blueAccent),
+            const SizedBox(height: 40),
+            const Text(
+              "Didn't receive the email?",
+              style: TextStyle(color: Colors.white54),
+            ),
+            TextButton(
+              onPressed: () async {
+                await authVM.resendVerificationEmail();
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Verification email resent!")),
+                  );
+                }
+              },
+              child: const Text(
+                "Resend Verification Email",
+                style: TextStyle(
+                    color: Colors.blueAccent, fontWeight: FontWeight.bold),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                await authVM.logout();
+                if (mounted) {
+                  Navigator.pushReplacementNamed(context, '/login');
+                }
+              },
+              child: const Text(
+                "Back to Login",
+                style: TextStyle(color: Colors.white38),
+              ),
+            ),
           ],
         ),
       ),
