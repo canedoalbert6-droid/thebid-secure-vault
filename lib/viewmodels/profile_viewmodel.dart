@@ -24,6 +24,9 @@ class ProfileViewModel extends ChangeNotifier {
     biometricEnabled = value;
 
     await _storage.saveBiometricEnabled(_uid!, value);
+    if (!value) {
+      await _storage.clearCredentials();
+    }
 
     notifyListeners();
   }

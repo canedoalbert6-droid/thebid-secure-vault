@@ -65,8 +65,8 @@ class _RegisterViewState extends State<RegisterView> with SingleTickerProviderSt
     // --- Dynamic Theme Colors ---
     final bgColor = isDark ? const Color(0xFF0F0F1A) : const Color(0xFFF0F2F5);
     final textColor = isDark ? Colors.white : const Color(0xFF1E1E2C);
-    final glassColor = isDark ? Colors.white.withOpacity(0.05) : Colors.white.withOpacity(0.6);
-    final glassBorder = isDark ? Colors.white.withOpacity(0.15) : Colors.black.withOpacity(0.05);
+    final glassColor = isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white.withValues(alpha: 0.6);
+    final glassBorder = isDark ? Colors.white.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.05);
 
     final isPassStrong = Validators.isValidPassword(passController.text);
     final hasPassInput = passController.text.isNotEmpty;
@@ -90,7 +90,7 @@ class _RegisterViewState extends State<RegisterView> with SingleTickerProviderSt
                 height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isDark ? Colors.purpleAccent.withOpacity(0.5) : Colors.blueAccent.withOpacity(0.2),
+                  color: isDark ? Colors.purpleAccent.withValues(alpha: 0.5) : Colors.blueAccent.withValues(alpha: 0.2),
                 ),
               ),
             ),
@@ -104,7 +104,7 @@ class _RegisterViewState extends State<RegisterView> with SingleTickerProviderSt
                 height: 250,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isDark ? Colors.deepPurpleAccent.withOpacity(0.4) : Colors.purpleAccent.withOpacity(0.15),
+                  color: isDark ? Colors.deepPurpleAccent.withValues(alpha: 0.4) : Colors.purpleAccent.withValues(alpha: 0.15),
                 ),
               ),
             ),
@@ -126,7 +126,7 @@ class _RegisterViewState extends State<RegisterView> with SingleTickerProviderSt
                         border: Border.all(color: glassBorder, width: 1.5),
                         boxShadow: isDark 
                             ? [] 
-                            : [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 20, spreadRadius: 5)],
+                            : [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 20, spreadRadius: 5)],
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -135,7 +135,7 @@ class _RegisterViewState extends State<RegisterView> with SingleTickerProviderSt
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: isDark ? Colors.white.withOpacity(0.1) : Colors.blueAccent.withOpacity(0.1),
+                              color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.blueAccent.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -260,7 +260,7 @@ class _RegisterViewState extends State<RegisterView> with SingleTickerProviderSt
                               style: ElevatedButton.styleFrom(
                                 padding: EdgeInsets.zero,
                                 backgroundColor: Colors.blueAccent,
-                                shadowColor: Colors.blueAccent.withOpacity(0.5),
+                                shadowColor: Colors.blueAccent.withValues(alpha: 0.5),
                                 elevation: 8,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(vm.isLoading ? 30 : 16),
@@ -285,7 +285,7 @@ class _RegisterViewState extends State<RegisterView> with SingleTickerProviderSt
                                         return;
                                       }
 
-                                      // 🔥 REGISTER FIRST
+                                      // ðŸ”¥ REGISTER FIRST
                                       final success = await vm.register(
                                         nameController.text.trim(),
                                         emailController.text.trim(),
@@ -329,10 +329,8 @@ class _RegisterViewState extends State<RegisterView> with SingleTickerProviderSt
                                         }
 
                                         if (context.mounted) {
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(builder: (_) => const EmailVerificationView()),
-                                          );
+                                          // 🚀 Go back to AuthWrapper
+                                          Navigator.pop(context);
                                         }
                                       }
                                     },
@@ -397,7 +395,7 @@ class _RegisterViewState extends State<RegisterView> with SingleTickerProviderSt
           width: 1.5,
         ),
         boxShadow: isFocused
-            ? [BoxShadow(color: Colors.blueAccent.withOpacity(0.2), blurRadius: 10, spreadRadius: 1)]
+            ? [BoxShadow(color: Colors.blueAccent.withValues(alpha: 0.2), blurRadius: 10, spreadRadius: 1)]
             : [],
       ),
       child: TextField(
@@ -412,7 +410,7 @@ class _RegisterViewState extends State<RegisterView> with SingleTickerProviderSt
           hintText: hint,
           hintStyle: TextStyle(color: isDark ? Colors.white38 : Colors.black38),
           filled: true,
-          fillColor: isDark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.03),
+          fillColor: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.03),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide.none,

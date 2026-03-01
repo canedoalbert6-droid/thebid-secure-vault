@@ -34,8 +34,8 @@ class _ProfileViewState extends State<ProfileView> {
     final bgColor = isDark ? const Color(0xFF0F0F1A) : const Color(0xFFF0F2F5);
     final textColor = isDark ? Colors.white : const Color(0xFF1E1E2C);
     final subTextColor = isDark ? Colors.white54 : Colors.black54;
-    final glassColor = isDark ? Colors.white.withOpacity(0.05) : Colors.white.withOpacity(0.6);
-    final glassBorder = isDark ? Colors.white.withOpacity(0.15) : Colors.black.withOpacity(0.05);
+    final glassColor = isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white.withValues(alpha: 0.6);
+    final glassBorder = isDark ? Colors.white.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.05);
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -56,7 +56,7 @@ class _ProfileViewState extends State<ProfileView> {
                 height: 250,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isDark ? Colors.deepPurpleAccent.withOpacity(0.5) : Colors.blue.withOpacity(0.2),
+                  color: isDark ? Colors.deepPurpleAccent.withValues(alpha: 0.5) : Colors.blue.withValues(alpha: 0.2),
                 ),
               ),
             ),
@@ -70,7 +70,7 @@ class _ProfileViewState extends State<ProfileView> {
                 height: 300,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isDark ? Colors.blueAccent.withOpacity(0.4) : Colors.purpleAccent.withOpacity(0.15),
+                  color: isDark ? Colors.blueAccent.withValues(alpha: 0.4) : Colors.purpleAccent.withValues(alpha: 0.15),
                 ),
               ),
             ),
@@ -104,7 +104,7 @@ class _ProfileViewState extends State<ProfileView> {
                             icon: Icon(Icons.logout_rounded, color: textColor),
                             onPressed: () async {
                               await authVM.logout();
-                              if (mounted) {
+                              if (context.mounted) {
                                 Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
                               }
                             },
@@ -130,7 +130,7 @@ class _ProfileViewState extends State<ProfileView> {
                             border: Border.all(color: glassBorder, width: 1.5),
                             boxShadow: isDark 
                                 ? [] 
-                                : [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 20, spreadRadius: 5)],
+                                : [BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 20, spreadRadius: 5)],
                           ),
                           child: Column(
                             children: [
@@ -141,8 +141,8 @@ class _ProfileViewState extends State<ProfileView> {
                                   boxShadow: [
                                     BoxShadow(
                                       color: isDark 
-                                          ? Colors.blueAccent.withOpacity(0.5) 
-                                          : Colors.blueAccent.withOpacity(0.2),
+                                          ? Colors.blueAccent.withValues(alpha: 0.5) 
+                                          : Colors.blueAccent.withValues(alpha: 0.2),
                                       blurRadius: 25,
                                       spreadRadius: 2,
                                     ),
@@ -237,7 +237,7 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.redAccent.shade400,
-                          shadowColor: Colors.redAccent.withOpacity(0.4),
+                          shadowColor: Colors.redAccent.withValues(alpha: 0.4),
                           elevation: 8,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
@@ -245,7 +245,7 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                         onPressed: () async {
                           await authVM.logout();
-                          if (mounted) {
+                          if (context.mounted) {
                             Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
                           }
                         },
@@ -297,7 +297,7 @@ class _ProfileViewState extends State<ProfileView> {
                 if (newName.isNotEmpty) {
                   await authVM.updateName(newName);
                 }
-                if (mounted) Navigator.pop(context);
+                if (context.mounted) Navigator.pop(context);
               },
               child: const Text("Save", style: TextStyle(color: Colors.white)),
             ),
@@ -331,7 +331,7 @@ class _ProfileViewState extends State<ProfileView> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: isDark ? Colors.white.withOpacity(0.1) : Colors.blueAccent.withOpacity(0.1),
+              color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.blueAccent.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, color: isDark ? Colors.white70 : Colors.blueAccent),
@@ -349,8 +349,8 @@ class _ProfileViewState extends State<ProfileView> {
           ),
           Switch.adaptive(
             value: value,
-            activeColor: Colors.blueAccent,
-            activeTrackColor: Colors.blueAccent.withOpacity(0.3),
+            activeThumbColor: Colors.blueAccent,
+            activeTrackColor: Colors.blueAccent.withValues(alpha: 0.3),
             inactiveThumbColor: isDark ? Colors.white54 : Colors.grey.shade400,
             inactiveTrackColor: isDark ? Colors.white24 : Colors.grey.shade200,
             onChanged: onChanged,

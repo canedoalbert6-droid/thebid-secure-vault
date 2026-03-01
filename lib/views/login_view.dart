@@ -65,10 +65,10 @@ class _LoginViewState extends State<LoginView>
                   child: Container(
                     padding: const EdgeInsets.all(32),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.05),
+                      color: Colors.white.withValues(alpha: 0.05),
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.15),
+                        color: Colors.white.withValues(alpha: 0.15),
                         width: 1.5,
                       ),
                     ),
@@ -109,9 +109,9 @@ class _LoginViewState extends State<LoginView>
                             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                             margin: const EdgeInsets.only(bottom: 20),
                             decoration: BoxDecoration(
-                              color: Colors.redAccent.withOpacity(0.1),
+                              color: Colors.redAccent.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.redAccent.withOpacity(0.3)),
+                              border: Border.all(color: Colors.redAccent.withValues(alpha: 0.3)),
                             ),
                             child: Row(
                               children: [
@@ -176,7 +176,7 @@ class _LoginViewState extends State<LoginView>
                           children: [
                             Expanded(
                                 child: Divider(
-                                    color: Colors.white.withOpacity(0.2))),
+                                    color: Colors.white.withValues(alpha: 0.2))),
                             const Padding(
                               padding:
                                   EdgeInsets.symmetric(horizontal: 16),
@@ -188,7 +188,7 @@ class _LoginViewState extends State<LoginView>
                             ),
                             Expanded(
                                 child: Divider(
-                                    color: Colors.white.withOpacity(0.2))),
+                                    color: Colors.white.withValues(alpha: 0.2))),
                           ],
                         ),
 
@@ -197,16 +197,18 @@ class _LoginViewState extends State<LoginView>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildIconButton(
-                              icon: Icons.fingerprint_rounded,
-                              color: Colors.greenAccent,
-                              onPressed: () async {
-                                await context
-                                    .read<AuthViewModel>()
-                                    .loginWithBiometrics();
-                              },
-                            ),
-                            const SizedBox(width: 20),
+                            if (vm.shouldShowBiometric) ...[
+                              _buildIconButton(
+                                icon: Icons.fingerprint_rounded,
+                                color: Colors.greenAccent,
+                                onPressed: () async {
+                                  await context
+                                      .read<AuthViewModel>()
+                                      .loginWithBiometrics();
+                                },
+                              ),
+                              const SizedBox(width: 20),
+                            ],
                             _buildIconButton(
                               icon: Icons.g_mobiledata_rounded,
                               color: Colors.white,
@@ -287,10 +289,10 @@ class _LoginViewState extends State<LoginView>
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.white.withOpacity(0.05),
+              color: Colors.white.withValues(alpha: 0.05),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.blueAccent.withOpacity(0.2),
+                  color: Colors.blueAccent.withValues(alpha: 0.2),
                   blurRadius: 20,
                   spreadRadius: 5,
                 )
@@ -321,7 +323,7 @@ class _LoginViewState extends State<LoginView>
           "Your Secure Digital Asset Manager",
           style: TextStyle(
             fontSize: 14, 
-            color: Colors.white.withOpacity(0.6),
+            color: Colors.white.withValues(alpha: 0.6),
             letterSpacing: 0.5,
           ),
         ),
@@ -364,7 +366,7 @@ class _LoginViewState extends State<LoginView>
               const TextStyle(color: Colors.white38),
           filled: true,
           fillColor:
-              Colors.white.withOpacity(0.08),
+              Colors.white.withValues(alpha: 0.08),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide.none,
@@ -386,10 +388,10 @@ class _LoginViewState extends State<LoginView>
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.08),
+          color: Colors.white.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(16),
           border:
-              Border.all(color: Colors.white.withOpacity(0.1)),
+              Border.all(color: Colors.white.withValues(alpha: 0.1)),
         ),
         child: Icon(icon, color: color, size: iconSize),
       ),

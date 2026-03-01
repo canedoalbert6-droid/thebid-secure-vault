@@ -24,15 +24,17 @@ class _EmailVerificationViewState
     await Future.delayed(const Duration(seconds: 5));
     if (!mounted) return;
     
-    await FirebaseAuth.instance.currentUser?.reload();
+    final authVM = context.read<AuthViewModel>();
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) return;
+    
+    await currentUser.reload();
+    if (!mounted) return;
 
-    if (FirebaseAuth.instance.currentUser?.emailVerified ?? false) {
-      if (mounted) {
-        await context.read<AuthViewModel>().refreshUser();
-        if (mounted) {
-          Navigator.pushReplacementNamed(context, '/profile');
-        }
-      }
+    if (currentUser.emailVerified) {
+      await authVM.refreshUser();
+      // 🚀 NO MANUAL NAVIGATION NEEDED
+      // AuthWrapper will automatically switch to ProfileView
     } else {
       checkEmailVerified();
     }
@@ -53,7 +55,7 @@ class _EmailVerificationViewState
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.blueAccent.withOpacity(0.1),
+                color: Colors.blueAccent.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: const Icon(Icons.mark_email_read_rounded,
@@ -84,7 +86,7 @@ class _EmailVerificationViewState
             TextButton(
               onPressed: () async {
                 await authVM.resendVerificationEmail();
-                if (mounted) {
+                if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("Verification email resent!")),
                   );
@@ -99,7 +101,7 @@ class _EmailVerificationViewState
             TextButton(
               onPressed: () async {
                 await authVM.logout();
-                if (mounted) {
+                if (context.mounted) {
                   Navigator.pushReplacementNamed(context, '/login');
                 }
               },

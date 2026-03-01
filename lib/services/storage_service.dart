@@ -30,6 +30,13 @@ class StorageService {
       key: 'biometric_$uid',
       value: enabled.toString(),
     );
+    // Also save a global flag for the login screen
+    await _storage.write(key: 'global_biometric_enabled', value: enabled.toString());
+  }
+
+  Future<bool> isGlobalBiometricEnabled() async {
+    final value = await _storage.read(key: 'global_biometric_enabled');
+    return value == 'true';
   }
 
   Future<bool> isBiometricEnabled(String uid) async {
