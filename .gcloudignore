@@ -1,0 +1,14 @@
+.gcloudignore
+.git
+.gitignore
+node_modules
+.dart_tool/
+build/
+ios/
+android/
+*.exe
+*.zip
+*.rar
+.idea/
+.vscode/
+.metadata

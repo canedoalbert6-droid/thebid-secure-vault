@@ -17,9 +17,12 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
+      return const FirebaseOptions(
+        apiKey: String.fromEnvironment('FIREBASE_API_KEY', defaultValue: ''),
+        appId: String.fromEnvironment('FIREBASE_APP_ID', defaultValue: ''),
+        messagingSenderId: String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID', defaultValue: ''),
+        projectId: String.fromEnvironment('FIREBASE_PROJECT_ID', defaultValue: ''),
+        storageBucket: String.fromEnvironment('FIREBASE_STORAGE_BUCKET', defaultValue: ''),
       );
     }
     switch (defaultTargetPlatform) {

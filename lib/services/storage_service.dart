@@ -16,6 +16,14 @@ class StorageService {
     await _storage.write(key: 'auth_token', value: token);
   }
 
+  Future<void> saveAuthType(String type) async {
+    await _storage.write(key: 'auth_type', value: type);
+  }
+
+  Future<String?> getAuthType() async {
+    return await _storage.read(key: 'auth_type');
+  }
+
   Future<void> clearAll() async {
     await _storage.deleteAll();
   }
